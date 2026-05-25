@@ -149,6 +149,44 @@
             }
         }
 
+        /* [NEW] Mobile Responsive Style (header height, size & logo wrap fix) */
+        @media (max-width: 768px) {
+            header {
+                padding: 0.65rem 1rem;
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+                gap: 0.5rem;
+            }
+            .header-logo {
+                gap: 0.5rem;
+            }
+            .header-logo .icon-wrapper {
+                width: 32px;
+                height: 32px;
+                border-radius: var(--radius-sm);
+            }
+            .header-logo .icon-wrapper svg {
+                width: 16px;
+                height: 16px;
+            }
+            .header-logo h1 {
+                font-size: 0.95rem;
+                white-space: nowrap;
+            }
+            /* Hide the sub-span and details to save massive vertical space on mobile */
+            .header-logo span {
+                display: none;
+            }
+            .header-info {
+                display: none;
+            }
+            .preview-area {
+                padding: 1rem;
+                gap: 1.25rem;
+            }
+        }
+
         /* Sidebar Panel (Inputs) */
         .sidebar {
             background: rgba(15, 23, 42, 0.95);
