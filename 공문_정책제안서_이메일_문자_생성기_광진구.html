@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>준법건축 시민연대 - 공문 & 정책제안서 이메일/문자 생성기</title>
+    <title>준법건축 시민연대 [광진구 전용] - 공문 & 정책제안서 이메일/문자 생성기</title>
     
     <!-- Google Fonts: Inter & Noto Sans KR -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -580,14 +580,14 @@
                 <i data-lucide="scale" style="color: var(--text-primary);"></i>
             </div>
             <div>
-                <h1>준법건축 시민연대 (전국 공통 생성기)</h1>
+                <h1>준법건축 시민연대 (광진구 전용)</h1>
             </div>
-            <span>OFFICIAL GENERATOR</span>
+            <span style="background: rgba(220, 38, 38, 0.1); border-color: rgba(220, 38, 38, 0.3); color: #ef4444;">광진구 전용</span>
         </div>
         <div style="display: flex; gap: 1rem; align-items: center;">
-            <a href="공문_정책제안서_이메일_문자_생성기_광진구.html" class="btn btn-primary" style="padding: 0.4rem 0.8rem; font-size: 0.8rem; background: var(--gradient-blue); box-shadow: 0 4px 14px rgba(6, 182, 212, 0.2);">
-                <i data-lucide="map-pin" size="14"></i>
-                <span>광진구 전용 생성기 가기</span>
+            <a href="index.html" class="btn btn-secondary" style="padding: 0.4rem 0.8rem; font-size: 0.8rem;">
+                <i data-lucide="globe" size="14"></i>
+                <span>전국 공통 생성기 가기</span>
             </a>
         </div>
 </header>
@@ -629,36 +629,36 @@
                 
                 <div class="form-group">
                     <label>지방자치단체명 <span class="required">*</span></label>
-                    <input type="text" id="common-district" class="form-control" value="" placeholder="지부 주소 입력 (비워두기 가능)" placeholder="지방자치단체명 입력 (예: 서울특별시 광진구)" oninput="syncCommonInputs()">
+                    <input type="text" id="common-district" class="form-control" value="서울특별시 광진구" oninput="syncCommonInputs()">
                 </div>
 
                 <div class="form-group">
                     <label>지부장 성명 <span class="required">*</span></label>
-                    <input type="text" id="common-leader" class="form-control" value="" placeholder="지부 주소 입력 (비워두기 가능)" placeholder="지부장 성명 입력" oninput="syncCommonInputs()">
+                    <input type="text" id="common-leader" class="form-control" value="신미경" oninput="syncCommonInputs()">
                 </div>
 
                 <div class="form-group">
                     <label>대표 연락처 <span class="required">*</span></label>
-                    <input type="text" id="common-contact" class="form-control" value="" placeholder="지부 주소 입력 (비워두기 가능)" placeholder="연락처 입력 (예: 010-1234-5678)" oninput="syncCommonInputs()">
+                    <input type="text" id="common-contact" class="form-control" value="010-1234-5678" oninput="syncCommonInputs()">
                 </div>
 
                 <div class="form-group">
                     <label>지부 주소 <span class="required">*</span></label>
-                    <input type="text" id="common-address" class="form-control" value="" placeholder="지부 주소 입력 (비워두기 가능)" oninput="syncCommonInputs()">
+                    <input type="text" id="common-address" class="form-control" value="" oninput="syncCommonInputs()">
                 </div>
 
                 <div class="form-group">
                     <label>지부 이메일</label>
-                    <input type="email" id="common-email" class="form-control" value="" placeholder="이메일 주소 입력" oninput="syncCommonInputs()">
+                    <input type="email" id="common-email" class="form-control" value="dsyoon@example.com" oninput="syncCommonInputs()">
                 </div>
 
                 <div class="form-group">
                     <label>지부 팩스 번호</label>
-                    <input type="text" id="common-fax" class="form-control" value="" placeholder="팩스 번호 입력" oninput="syncCommonInputs()">
+                    <input type="text" id="common-fax" class="form-control" value="02-6442-3442 (서울지부)" oninput="syncCommonInputs()">
                 </div>
                 <div class="form-group">
-                    <label>수신처 이메일 <span class="required">*</span></label>
-                    <input type="text" id="target-email" class="form-control" value="" placeholder="수신처(타겟) 이메일 입력" oninput="state.target_email = this.value; renderAll();">
+                    <label>수신자(타겟) 이메일 <span class="required">*</span></label>
+                    <input type="text" id="target-email" class="form-control" value="" placeholder="자동 선택 또는 직접 입력" oninput="state.target_email = this.value; renderAll();">
                 </div>
             </div>
 
@@ -774,31 +774,31 @@
 
         const state = {
             // common variables
-            district: "",
-            leader_name: "",
-            contact: "",
+            district: "서울 광진구",
+            leader_name: "신미경",
+            contact: "010-1234-5678",
             address: "",
-            email: "",
-            fax: "",
-            target_email: "",
+            email: "dsyoon@example.com",
+            fax: "02-6442-3442 (서울지부)",
+            target_email: "532jhlee@gmail.com",
             
             // petition dynamic (정책제안서)
-            petition_receiver: "김광진",
-            petition_count: "250",
-            petition_mp_or_minister: "국회의원님",
+            petition_receiver: "이정헌",
+            petition_count: "55",
+            petition_mp_or_minister: "국회의원",
             petition_date: "2026. 05. 25",
 
             // mayor dynamic
             mayor_role: "sitting", // "sitting" or "candidate"
             mayor_name: "김경호",
-            mayor_title: "구청장님",
+            mayor_title: "구청장",
             mayor_serial: "0501",
             mayor_deadline: "2026년 6월 15일",
 
             // councilor dynamic
             councilor_role: "sitting", // "sitting" or "candidate"
-            councilor_name: "박의원",
-            councilor_title: "구의원님",
+            councilor_name: "고양석",
+            councilor_title: "구의원",
             councilor_serial: "0501",
             councilor_deadline: "2026년 6월 15일"
         };
@@ -819,14 +819,99 @@
             switchTemplate('petition');
         });
 
+        
+        function selectGwangjinMP(val) {
+            if (!val) return;
+            const select = document.getElementById('gwangjin-mp-select');
+            const opt = select.options[select.selectedIndex];
+            const email = opt.getAttribute('data-email');
+            
+            state.petition_receiver = val;
+            state.target_email = email;
+            
+            const inputName = document.getElementById('pet-receiver');
+            if (inputName) inputName.value = val;
+            
+            const inputEmail = document.getElementById('target-email');
+            if (inputEmail) inputEmail.value = email;
+            
+            renderAll();
+        }
+
+        function selectGwangjinMayor(val) {
+            if (!val) return;
+            const select = document.getElementById('gwangjin-mayor-select');
+            const opt = select.options[select.selectedIndex];
+            const role = opt.getAttribute('data-role');
+            const email = opt.getAttribute('data-email');
+            const phone = opt.getAttribute('data-phone');
+            
+            state.mayor_name = val;
+            state.mayor_role = role;
+            state.target_email = email;
+            
+            if (role === 'candidate') {
+                state.mayor_title = '후보자님';
+            } else {
+                state.mayor_title = '구청장님';
+            }
+            
+            const inputRole = document.getElementById('mayor-role');
+            if (inputRole) inputRole.value = role;
+            
+            const inputName = document.getElementById('mayor-name');
+            if (inputName) inputName.value = val;
+            
+            const inputTitle = document.getElementById('mayor-title');
+            if (inputTitle) inputTitle.value = state.mayor_title;
+            
+            const inputEmail = document.getElementById('target-email');
+            if (inputEmail) inputEmail.value = email;
+            
+            renderAll();
+        }
+
+        function selectGwangjinCouncilor(val) {
+            if (!val) return;
+            const select = document.getElementById('gwangjin-councilor-select');
+            const opt = select.options[select.selectedIndex];
+            const role = opt.getAttribute('data-role');
+            const title = opt.getAttribute('data-title');
+            const email = opt.getAttribute('data-email');
+            
+            state.councilor_name = val;
+            state.councilor_role = role;
+            state.target_email = email;
+            
+            if (role === 'candidate') {
+                state.councilor_title = '후보자님';
+            } else {
+                state.councilor_title = title;
+            }
+            
+            const inputRole = document.getElementById('councilor-role');
+            if (inputRole) inputRole.value = role;
+            
+            const inputName = document.getElementById('councilor-name');
+            if (inputName) inputName.value = val;
+            
+            const inputTitle = document.getElementById('councilor-title');
+            if (inputTitle) inputTitle.value = state.councilor_title;
+            
+            const inputEmail = document.getElementById('target-email');
+            if (inputEmail) inputEmail.value = email;
+            
+            renderAll();
+        }
+
         function syncCommonInputs() {
-            state.target_email = document.getElementById("target-email").value;
             state.district = document.getElementById('common-district').value;
             state.leader_name = document.getElementById('common-leader').value;
             state.contact = document.getElementById('common-contact').value;
             state.address = document.getElementById('common-address').value;
             state.email = document.getElementById('common-email').value;
             state.fax = document.getElementById('common-fax').value;
+            state.target_email = document.getElementById('target-email').value;
 
             renderAll();
         }
@@ -843,10 +928,22 @@
             // Render Dynamic Input Area in Sidebar
             const dynamicArea = document.getElementById('dynamic-inputs');
             
-            if (templateName === 'petition') {
+                        if (templateName === 'petition') {
                 dynamicArea.innerHTML = `
                     <div class="sidebar-section-title">
                         <i data-lucide="user-check" size="16" style="color: var(--accent-teal)"></i>
+                        <span>광진구 국회의원 신속 선택</span>
+                    </div>
+                    <div class="form-group">
+                        <label>광진구 국회의원 선택</label>
+                        <select id="gwangjin-mp-select" class="form-control" onchange="selectGwangjinMP(this.value)">
+                            <option value="">-- 국회의원 선택 --</option>
+                            <option value="고민정" data-email="kominjung21@gmail.com" ${state.petition_receiver === '고민정' ? 'selected' : ''}>고민정 국회의원 (광진구 을)</option>
+                            <option value="이정헌" data-email="532jhlee@gmail.com" ${state.petition_receiver === '이정헌' ? 'selected' : ''}>이정헌 국회의원 (광진구 갑)</option>
+                        </select>
+                    </div>
+                    <div class="sidebar-section-title" style="margin-top: 1rem;">
+                        <i data-lucide="edit-3" size="16" style="color: var(--accent-teal)"></i>
                         <span>정책제안서 전용 변수</span>
                     </div>
                     <div class="form-group">
@@ -862,13 +959,25 @@
                     </div>
                     <div class="form-group">
                         <label>동참 제안인 수 (명) <span class="required">*</span></label>
-                        <input type="number" id="pet-count" class="form-control" value="${state.petition_count}" oninput="updateDynamic('petition_count', this.value)">
+                        <input type="number" id="pet-count" class="form-control" value="55" oninput="updateDynamic('petition_count', this.value)">
                     </div>
                 `;
             } else if (templateName === 'mayor') {
                 dynamicArea.innerHTML = `
                     <div class="sidebar-section-title">
                         <i data-lucide="user-check" size="16" style="color: var(--accent-teal)"></i>
+                        <span>광진구 지자체장(구청장) 선택</span>
+                    </div>
+                    <div class="form-group">
+                        <label>광진구청장 및 후보자 선택</label>
+                        <select id="gwangjin-mayor-select" class="form-control" onchange="selectGwangjinMayor(this.value)">
+                            <option value="">-- 구청장/후보 선택 --</option>
+                            <option value="김경호" data-role="sitting" data-email="gwangjin59@naver.com" data-phone="010-5266-9609" ${state.mayor_name === '김경호' ? 'selected' : ''}>김경호 (현 광진구청장 / 국민의힘 후보)</option>
+                            <option value="문종철" data-role="candidate" data-email="jcmoon1@empal.com" data-phone="" ${state.mayor_name === '문종철' ? 'selected' : ''}>문종철 (구청장 후보 / 더불어민주당)</option>
+                        </select>
+                    </div>
+                    <div class="sidebar-section-title" style="margin-top: 1rem;">
+                        <i data-lucide="edit-3" size="16" style="color: var(--accent-teal)"></i>
                         <span>지자체장 공문 전용 변수</span>
                     </div>
                     <div class="form-group">
@@ -899,6 +1008,27 @@
                 dynamicArea.innerHTML = `
                     <div class="sidebar-section-title">
                         <i data-lucide="user-check" size="16" style="color: var(--accent-teal)"></i>
+                        <span>광진구 핵심 의원(11인) 신속 선택</span>
+                    </div>
+                    <div class="form-group">
+                        <label>광진구 의원/후보자 선택</label>
+                        <select id="gwangjin-councilor-select" class="form-control" onchange="selectGwangjinCouncilor(this.value)">
+                            <option value="">-- 지방의원/후보 선택 --</option>
+                            <option value="최일환" data-role="sitting" data-title="구의원님" data-email="okhwan2016@gmail.com" ${state.councilor_name === '최일환' ? 'selected' : ''}>최일환 (구의원 / 국민의힘, 가선거구)</option>
+                            <option value="허은" data-role="sitting" data-title="구의원님" data-email="silverheo@naver.com" ${state.councilor_name === '허은' ? 'selected' : ''}>허은 (구의원 / 더불어민주당, 나선거구)</option>
+                            <option value="장길천" data-role="sitting" data-title="구의원님" data-email="kkudosa@hanmail.net" ${state.councilor_name === '장길천' ? 'selected' : ''}>장길천 (구의원 / 더불어민주당, 라선거구)</option>
+                            <option value="김강산" data-role="sitting" data-title="구의원님" data-email="sunny6136@naver.com" ${state.councilor_name === '김강산' ? 'selected' : ''}>김강산 (구의원 / 국민의힘, 가선거구)</option>
+                            <option value="추윤구" data-role="sitting" data-title="구의원님" data-email="chuo42@daum.net" ${state.councilor_name === '추윤구' ? 'selected' : ''}>추윤구 (구의원 / 무소속, 가선거구)</option>
+                            <option value="고양석" data-role="sitting" data-title="구의원님" data-email="ys0496@naver.com" ${state.councilor_name === '고양석' ? 'selected' : ''}>고양석 (구의원 / 더불어민주당, 다선거구)</option>
+                            <option value="김미영" data-role="sitting" data-title="구의원님" data-email="mygwangjin@naver.com" ${state.councilor_name === '김미영' ? 'selected' : ''}>김미영 (구의원 / 더불어민주당, 나선거구)</option>
+                            <option value="김상희" data-role="sitting" data-title="구의원님" data-email="lemon0209@naver.com" ${state.councilor_name === '김상희' ? 'selected' : ''}>김상희 (구의원 / 더불어민주당, 다선거구)</option>
+                            <option value="신진호" data-role="candidate" data-title="시의원님" data-email="prejino@naver.com" ${state.councilor_name === '신진호' ? 'selected' : ''}>신진호 (시의원 후보 / 국민의힘, 제3선거구)</option>
+                            <option value="전은혜" data-role="candidate" data-title="시의원님" data-email="kttdy@hanmail.net" ${state.councilor_name === '전은혜' ? 'selected' : ''}>전은혜 (시의원 후보 / 국민의힘, 제4선거구)</option>
+                            <option value="김회근" data-role="candidate" data-title="시의원님" data-email="hgap3233@naver.com" ${state.councilor_name === '김회근' ? 'selected' : ''}>김회근 (시의원 후보 / 더불어민주당, 제1선거구)</option>
+                        </select>
+                    </div>
+                    <div class="sidebar-section-title" style="margin-top: 1rem;">
+                        <i data-lucide="edit-3" size="16" style="color: var(--accent-teal)"></i>
                         <span>지방의원 공문 전용 변수</span>
                     </div>
                     <div class="form-group">
@@ -917,6 +1047,7 @@
                         <select id="councilor-title" class="form-control" onchange="updateDynamic('councilor_title', this.value)">
                             <option value="구의원님" ${state.councilor_title === '구의원님' ? 'selected' : ''}>구의원님</option>
                             <option value="시의원님" ${state.councilor_title === '시의원님' ? 'selected' : ''}>시의원님</option>
+                            <option value="후보자님" ${state.councilor_title === '후보자님' ? 'selected' : ''}>후보자님</option>
                         </select>
                     </div>
                     <div class="form-group">
@@ -1009,15 +1140,18 @@
 
             // Calculate SMS Byte length
             calculateSMSBytes();
+            if (document.getElementById('target-email')) {
+                document.getElementById('target-email').value = state.target_email || "";
+            }
         }
 
         // 1. Render Petition (국회의원 정책제안서)
-        function renderPetition(year, month, day) {
-            const receiver = state.petition_receiver || "[국회의원/장관 성명]";
-            const title = state.petition_mp_or_minister || "국회의원님";
+                        function renderPetition(year, month, day) {
+            const receiver = state.petition_receiver || "[국회의원/장관]";
+            const title = state.petition_mp_or_minister || "국회의원";
             const count = state.petition_count || "0";
             
-            const district = state.district || "[지방자치단체명]";
+            const district = state.district || "[지자체명]";
             const leader = state.leader_name || "[지부장 이름]";
             const contact = state.contact || "[연락처]";
             const address = state.address || "[주소]";
@@ -1025,70 +1159,130 @@
             const fax = state.fax || "[팩스]";
             
             const conflictText = getConflictSection();
-
-            const subject = `[정책제안] 서민 주거 안정 및 재산권 보호를 위한 「특정건축물 정리에 관한 특별조치법」 개정 건의의 건`;
+            const conflictSMS = getConflictSMS('\n');
             
-            let body = `[정 책 제 안 서]
+            const isLeeJungHun = (receiver === "이정헌" || receiver === "이정현");
+            
+            let subject = "";
+            let body = "";
+            let smsBody = "";
+            
+            // Helper strings to avoid nested newlines in templates
+            const addressLine = address ? "주 소 : " + address + "\n" : "";
+            const conflictPart = conflictText ? "\n" + conflictText + "\n" : "";
+            
+            if (isLeeJungHun) {
+                // Customized text for MP Lee Jung-hun (who representative-sponsored the bill)
+                subject = `[지지 및 청원] 이정헌 의원님의 특정건축물 양성화 특별법 대표 발의에 대한 적극적 지지 및 조속 시행 요청`;
+                
+                body = `[정책제안 및 감사 결의서]
 
-수  신 : ${receiver} ${title} 귀하 / 국토교통부 장관 귀하
-참  조 : 국토교통위원회 수석전문위원 및 국토교통부 건축정책과장
-발  신 : 준법건축 바른관리 시민연대 ${district} 지부 회원 일동
-         (대표 제안인 : 지부장 ${leader} 외 ${count}명)
-주  소 : ${address}
-연락처 : ${contact}
+수 신 : 이정헌 국회의원님 (서울 광진구갑) 귀하
+참 조 : 의원실 정책공약 및 입법 담당자
+발 신 : 준법건축 시민연대 ${district} 지부 회원 일동
+         (대표 발송인 : 지부장 ${leader} 외 ${count}명)
+${addressLine}연락처 : ${contact}
 
-제  목 : [정책제안] 서민 주거 안정 및 재산권 보호를 위한 「특정건축물 정리에 관한 특별조치법」 개정 및 시행령 세부 규정 완화 건의의 건
+제 목 : [지지 및 청원] 특정건축물 정리 특별조치법안(양성화 특별법) 대표 발의에 대한 전폭적 지지 및 후속 행정 조치 건의
 
-존경하는 ${receiver} ${title},
+존경하는 이정헌 국회의원님,
 
-1. 국민의 목소리에 귀 기울이시고 중서민의 민생 안정을 위해 활발한 입법 및 의정 활동(국정 수행)에 전념하시는 귀하의 노고에 진심으로 감사와 경의를 표합니다.
+1. 먼저, 우리 광진구 지역 사회와 전국의 수많은 소규모 주거용 위반건축물 실소유자 및 임차인들의 고통을 보듬고, 서민 주거 안정과 재산권 보호를 위해 '특정건축물 정리에 관한 특별조치법안'을 대표 발의하여 본회의 통과를 이끌어 주신 것에 대해 머리 숙여 깊은 감사를 드립니다. 의원님의 민생 행보와 탁월한 입법 성과에 광진구 구민들은 뜨거운 격려와 찬사를 보냅니다.
 
-2. 저희는 준법건축 바른관리 시민연대 ${district} 지부 소속 회원들이자, 본의 아니게 위반건축물을 소유하게 되어 매년 부과되는 가혹한 이행강제금의 굴레 속에서 고통받고 있는 대한민국 서민 소유주 및 억울한 임차인 일동입니다.
+2. 위반건축물이라는 굴레로 인해 대출 제한, 거래 단절, 그리고 매년 반복되는 감당할 수 없는 이행강제금 부과 등으로 주거 불안에 떨던 수많은 서민 실소유자들과 전세사기 피해자들에게 의원님이 대표 발의하신 이 특별법은 한줄기 구원의 빛이 되었습니다.
 
-3. 지난 2026년 5월 7일, 여·야·정의 눈물겨운 대타협을 통해 오랜 숙원이었던 「특정건축물 정리에 관한 특별조치법」 (이하 특별법)이 본회의를 통과하였을 때, 저희 백만 위반건축물 피해 소유주와 가족들은 이제야 어두운 터널을 벗어나 대한민국 헌법이 보장하는 정당한 재산권과 주거 안정의 혜택을 누릴 수 있으리라 기쁨의 눈물을 흘렸습니다.
+3. 의원님이 열어주신 소중한 양성화의 길을 바탕으로, 이 특별법이 성공적으로 안착하고 실질적인 서민 구제 성과를 거두기 위해 아래와 같은 후속 모니터링과 상위 행정적 지원 조치를 건의드립니다.
 
-4. 그러나 국회 통과 법안의 구체적인 세부 조항들과 시행 부칙들을 면밀히 살펴본 결과, 당초 입법 취지였던 '광범위한 서민 구제'와 '주거 취약계층 보호'를 완벽히 실현하기에는 현장의 현실과 동떨어진 일부 독소 및 한계 조항이 존재하여, 실질적인 양성화 혜택을 받지 못하고 좌절하는 서민들이 속출할 위기에 직면해 있습니다. 이에 저희 제안인 일동은 간절한 마음을 담아 아래 사항을 적극 검토하고 입법 및 행정 조치로 보완해 주실 것을 강력히 제안합니다.
+--- 아 래 ---
 
---- 다 음 ---
+가. 특별법 시행 효력 기간의 충분한 보장 및 모니터링
+   - 특별법상 신청 기간이 18개월로 한시적인 만큼, 실제로 생업에 바쁜 서민들이 설계 도서 작성 및 구비 서류 준비 시기를 놓치지 않도록 국회 차원에서 '특정건축물 지원센터'의 조기 개설과 지자체별 밀착 홍보 과정을 지속적으로 감독 및 독려해 주시길 요청드립니다.
 
-가. 특별법 유효기간(18개월)의 최소 3년 이상 연장 법안 조속 발의 촉구
-   - 현행 특별법 부칙 제2조는 이 법의 효력을 "시행일로부터 18개월간"만 가지도록 고도로 제한된 한시법으로 규정하고 있습니다.
-   - 하지만 특별법에 따른 양성화를 신청하기 위해서는 건축사가 작성한 설계도서 및 현장조서 작성, 지자체 건축위원회 심의 대기, 소방 접도 기준 적합성 검토 등 수많은 복잡한 행정 절차가 수반됩니다. 더욱이 지자체별 조례 개정이 선행되어야 하므로 조례가 통과되는 데만도 수개월이 소요됩니다.
-   - 18개월이라는 지나치게 짧은 기한은 대다수 영세하고 정보가 취약한 서민들이 양성화 혜택을 알기도 전에 법안이 종료되어 또 다른 사각지대를 낳을 뿐입니다. 입법의 실효적 취지를 달성할 수 있도록 특별법 유효기간을 최소 3년(36개월) 이상으로 연장하는 특별법 일부개정법률안을 조속히 공동 발의하여 주십시오.
+나. 지방자치단체(광진구청 및 서울시) 조례 위임 범위의 최대 적용 지원
+   - 본 특별법은 단독주택의 양성화 연면적 기준을 165㎡ 이하로 규정하면서도 지자체 조례에 따라 최대 330㎡까지 그 범위를 넓힐 수 있도록 위임하고 있습니다.
+   - 광진구청 및 서울시의회에서 조례 개정 시, 특별법의 취지를 살려 적용 대상을 법정 최대한도(단독주택 연면적 330㎡)로 적용할 수 있도록 광진구갑 국회의원으로서 지역의회와 구청장 측에 전폭적인 유권해석과 신속한 조례 반영을 주도하고 힘을 실어주시기 바랍니다.
 
-나. 국토교통부 시행령(대통령령) 개정을 통한 '근생빌라' 주차장 기준의 전국적 완화 적용 건의
-   - 특별법 제7조제1항 단서는 상가를 주택으로 전용한 소위 '근생빌라' 소유주들에게 부설주차장 부담금을 지자체에 납부하도록 명문화하고 있으며, 동조 제3항을 통해 지자체 조례로 이를 완화할 수 있도록 위임하고 있습니다.
-   - 그러나 지자체의 재정 자립도 및 지역 정치적 상황에 따라 조례 개정 여부가 천차만별로 나뉘어, 어느 지역에 사느냐에 따라 구제 여부가 결정되는 심각한 '주거 형평성 붕괴' 현상이 우려됩니다.
-   - 따라서 국토교통부의 특별법 시행령(대통령령) 및 시행규칙 제정 시, '근생빌라' 및 '방쪼개기 다세대'의 부설주차장 의무를 전국적으로 최소 80% 이상 일괄 감면하도록 상위 수준에서 가이드라인을 명문화하여 주십시오. 이를 통해 지방자치단체의 행정 소극주의를 타파하고 신속한 구제가 전국적으로 균등하게 이루어지도록 행정명령을 발하여 주실 것을 간곡히 제안드립니다.
-
-다. 억울한 선의의 소유주를 위한 소급적 구제 장치 마련
-   - 시공사의 부도, 공인중개사의 사기적 매물 중개 등으로 인해 위반 건축물인지 전혀 모르고 평생의 전 재산을 털어 내 집 마련을 한 선의의 소유주들이 여전히 법의 사각지대에 방치되어 있습니다. 
-   - 이들이 범법자라는 주홍글씨에서 벗어날 수 있도록 입법적 지원과 국토부 차원의 행정 유권해석을 통해 폭넓은 소급 구제 장치를 마련해 주시길 간곡히 제안드립니다.
-${conflictText ? '\n' + conflictText + '\n' : ''}
-5. 존경하는 ${receiver} ${title}, 법은 눈물 흘리는 자의 눈물을 닦아주고, 국가의 규제와 현실 사이에서 고통받는 서민들의 삶을 보듬어 줄 때 진정한 권위를 가집니다. 저희 ${district} 준법건축 시민연대 회원들과 억울한 서민 일동은 귀하께서 보여주실 과감한 서민 구제 입법 및 행정적 결단을 평생 잊지 않고 기억할 것입니다. 부디 저희의 절박한 제안을 외면하지 마시고, 따뜻한 민생 살리기에 앞장서 주시기를 간절히 머리 숙여 제안드립니다.
+다. 주차장법 및 소방기준 등 현실적인 조례 완화 공조
+   - 실제 위반건축물 소유자들이 사용승인을 받으려 할 때 가장 큰 난관이 되는 '부설주차장 추가 설치 의무' 및 '소방 안전 기준' 등 지자체 조례로 완화가 가능한 항목들이 사문화되지 않고 유연하게 집행되도록 서울시의회 및 광진구의회와의 긴밀한 정책 공조를 부탁드립니다.
+${conflictPart}
+4. 존경하는 이정헌 의원님, 의원님이 뿌리내려 주신 소중한 민생 입법의 씨앗이 광진구에서 전폭적인 행정 유권해석과 유연한 조례 적용으로 꽃을 피울 수 있도록 저희 시민연대도 함께 발걸음을 맞출 것입니다. 모쪼록 위반건축물 실소유자들의 절박한 눈물을 완전히 닦아주실 때까지 끝까지 선봉에서 지휘해 주시기를 간절히 간청 드립니다.
 
 2026년 05월 ${day}일
 
-대표 제안인 : 준법건축 바른관리 시민연대 ${district} 지부 
-지부장 ${leader} 외 제안인 일동 (인)`;
+공동 발송인 : 준법건축 시민연대 ${district} 
+지부장 ${leader} 및 회원 일동 (${count}명)`;
+
+                smsBody = `[이정헌 의원님 감사/청원]
+안녕하십니까, 이정헌 의원님. 광진구 시민연대 지부장 ${leader}입니다.
+서민 주거 안정을 위한 '위반건축물 양성화 특별법' 대표 발의에 깊이 감사드립니다!
+이 특별법이 광진구청 조례 개정을 통해 최대 범위(단독주택 330㎡ 등)로 전폭 적용되도록 상위 차원의 강력한 지원을 청원드립니다.${conflictSMS}
+이메일로 송부해 드린 상세 지지/청원 공문을 꼭 검토해 주시길 부탁드립니다.
+연락처: ${contact}`;
+
+            } else {
+                // Standard policy proposal text for other MPs / Ministers
+                subject = `[정책제안] 살기 좋은 주거 안심 보장 위반건축물 특정건축물 양성화 특별법 조속 통과 요청`;
+                
+                body = `[정 책 제 안 서]
+
+수 신 : ${receiver} ${title} 귀하
+참 조 : 보좌관 및 정책 입법 담당자
+발 신 : 준법건축 시민연대 ${district} 지부 회원 일동
+         (대표 발송인 : 지부장 ${leader} 외 ${count}명)
+${addressLine}연락처 : ${contact}
+
+제 목 : [정책제안] 살기 좋은 주거 안심 보장을 위한 위반건축물 특정건축물 양성화 특별법 조속 통과 및 입법 완화 건의
+
+존경하는 ${receiver} ${title},
+
+1. 국민의 목소리에 귀 기울여 주시고 민생 안정과 주거 안녕을 위해 노고가 많으신 ${receiver} ${title}의 노고와 헌신에 깊은 경의를 표합니다.
+
+2. 저희 준법건축 시민연대 ${district} 지부 소속 회원들은 평생 성실히 일궈온 주거용 주택이 위반건축물로 지정되어 매년 과중한 이행강제금 부과와 불법 건축물 낙인에 고통받고 있는 선의의 서민 실소유자 및 임차인 일동입니다.
+
+3. 지난 2026년 5월 7일, 국회 본회의를 통과한 특정건축물 정리에 관한 특별조치법(일명 양성화 특별법)을 대표 발의해 서민들의 눈물을 닦아주고 계신 행보에 깊이 공감하고 지지를 표하는 바입니다.
+
+4. 다만 현행법상 일률적인 단속 기준과 이행강제금 제도의 한계로 인해, '생계형 빌라'나 '소규모 서민 주택'에 거주하는 대다수 구민들은 이행강제금 폭탄으로 인해 생존권과 주거권의 벼랑 끝에 몰려 있습니다. 이에 시민연대는 전국 지부 회원들과 연대하여 아래와 같은 실질적인 입법적 완화 및 제도 정비를 요청드립니다.
+
+--- 아 래 ---
+
+가. 특별조치 유효기간(18개월)의 최소 3년 이상 대폭 연장
+   - 특별법 시행에 따른 건축위원회 심의, 설계 도서 작성 및 행정 처리 소요 시간을 감안할 때 현행 18개월은 너무 짧습니다.
+   - 정보 취약계층인 고령 서민들과 임차인들의 혼선을 막고 충분한 양성화 혜택이 돌아갈 수 있도록 특별법 유효기간을 최소 3년(36개월) 이상 연장하는 법안 개정을 요청드립니다.
+
+나. 다가구 및 다세대 주택(공동주택)의 완화 기준 대폭 확대
+   - 다세대 주택(전용면적 85㎡ 이하)과 다가구 주택의 지자체 조례 위임 범위를 법정 한도 내에서 최대한 확대해 적용될 수 있도록 행정안전부 및 국토교통부를 향한 상위 차원의 감사와 권고를 진행해 주시기 바랍니다.
+
+다. 실거주 1주택 서민에 대한 영구적 이행강제금 감면 법제화
+   - 양성화 혜택에서 탈락되거나 구조상 물리적인 완화가 불가능한 선의의 실거주 1주택 서민들에 대해서는 행정 처분 유예 및 이행강제금의 영구적 감면(최소 80% 이상) 조항 신설을 입법해 주실 것을 간곡히 요청드립니다.
+${conflictPart}
+5. 존경하는 ${receiver} ${title}, 수십만 위반건축물 서민 구민들의 눈물을 닦아주고, 이들이 합법적인 제도권 내에서 안심하고 거주할 수 있도록 적극적인 정책 검토와 법적 지원을 부탁드립니다. 저희 ${district} 지부 회원 일동은 의원님의 주거 안심 행보를 적극 지지하고 응원할 것이며, 앞으로의 신속한 의정 활동 및 정책 추진 과정을 간곡히 지켜보며 기대하겠습니다.
+
+2026년 05월 ${day}일
+
+공동 발송인 : 준법건축 시민연대 ${district} 
+지부장 ${leader} 및 회원 일동 (${count}명)`;
+
+                smsBody = `[주거안심 정책제안]
+안녕하세요, ${receiver} ${title}. 위반건축물 해결을 위한 시민연대의 지부장 ${leader}입니다.
+국회 위반건축물 특별조치법의 신속한 시행(효력 18개월 -> 최소 3년 연장)과 실효성 확보를 위해 힘써 주시기를 확고히 제안 드립니다.${conflictSMS}
+구체적인 정책제안서 내용(이메일 발송 완료)을 검토해 주시길 간청 드립니다.
+지부연락처: ${contact}`;
+            }
 
             document.getElementById('email-subject-view').innerText = subject;
             document.getElementById('email-body-view').value = body;
-            
-            // SMS content
-            document.getElementById('phone-receiver-header').innerText = `${receiver} ${title}`;
-            
-            const conflictSMS = getConflictSMS('\n');
-            const smsBody = `[준법시민연대 정책제안]
-안녕하십니까, ${receiver} ${title}. 준법건축 시민연대 지부장 ${leader}입니다.
-지난 5월 7일 통과된 특정건축물 특별법의 한시법 기한(18개월) 3년 연장 및 시행령상 주차장 의무 감면을 건의드립니다.${conflictSMS}
-상세 제안서는 이메일(${email})로 송부드렸사오니 입법적 지원과 긍정적 검토를 제안드립니다.
-연락처: ${contact}`;
-            
+
+            // Handle SMS Receiver display
+            if (state.petition_receiver === "김경호") {
+                document.getElementById('phone-receiver-header').innerText = `김경호 구청장 (010-5266-9609)`;
+            } else {
+                document.getElementById('phone-receiver-header').innerText = `${receiver} ${title}`;
+            }
+
             document.getElementById('sms-bubble-content').innerText = smsBody;
         }
 
-        // 2. Render Mayor Document (지자체장 공문)
+
         function renderMayor(year, month, day) {
             const isSitting = (state.mayor_role !== 'candidate');
             const receiver = state.mayor_name || (isSitting ? "[구청장/시장 성명]" : "[후보자 성명]");
@@ -1234,8 +1428,14 @@ ${conflictText ? '\n' + conflictText + '\n' : ''}
             document.getElementById('email-subject-view').innerText = subject;
             document.getElementById('email-body-view').value = body;
             
+
             // SMS content
-            document.getElementById('phone-receiver-header').innerText = `${receiver} ${title}`;
+            if (state.mayor_name === "김경호") {
+                document.getElementById('phone-receiver-header').innerText = `김경호 구청장 (010-5266-9609)`;
+            } else {
+                document.getElementById('phone-receiver-header').innerText = `${receiver} ${title}`;
+            }
+
             document.getElementById('sms-bubble-content').innerText = smsBody;
         }
 
@@ -1377,8 +1577,14 @@ ${conflictText ? '\n' + conflictText + '\n' : ''}
             document.getElementById('email-subject-view').innerText = subject;
             document.getElementById('email-body-view').value = body;
             
+
             // SMS content
-            document.getElementById('phone-receiver-header').innerText = `${receiver} ${title}`;
+            if (state.mayor_name === "김경호") {
+                document.getElementById('phone-receiver-header').innerText = `김경호 구청장 (010-5266-9609)`;
+            } else {
+                document.getElementById('phone-receiver-header').innerText = `${receiver} ${title}`;
+            }
+
             document.getElementById('sms-bubble-content').innerText = smsBody;
         }
 
