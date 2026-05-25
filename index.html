@@ -1,0 +1,1242 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>준법건축 시민연대 - 공문 & 탄원서 이메일/문자 생성기</title>
+    
+    <!-- Google Fonts: Inter & Noto Sans KR -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    
+    <!-- Lucide Icons (CDN) -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <style>
+        :root {
+            --bg-primary: #0f172a;
+            --bg-secondary: #1e293b;
+            --bg-tertiary: #334155;
+            --accent-teal: #0d9488;
+            --accent-emerald: #059669;
+            --accent-cyan: #06b6d4;
+            --accent-blue: #3b82f6;
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --text-muted: #64748b;
+            --border-color: rgba(255, 255, 255, 0.08);
+            --gradient-accent: linear-gradient(135deg, #059669 0%, #0d9488 100%);
+            --gradient-blue: linear-gradient(135deg, #06b6d4 0%, #3b82f6 100%);
+            --shadow-premium: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+            --radius-lg: 16px;
+            --radius-md: 10px;
+            --radius-sm: 6px;
+            --transition-smooth: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', 'Noto Sans KR', sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        body {
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+        }
+
+        /* Scrollbar styling */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--bg-primary);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--bg-secondary);
+            border-radius: var(--radius-sm);
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--bg-tertiary);
+        }
+
+        /* Header Styling */
+        header {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border-color);
+            padding: 1.25rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header-logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .header-logo .icon-wrapper {
+            background: var(--gradient-accent);
+            width: 40px;
+            height: 40px;
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 12px rgba(13, 148, 136, 0.3);
+        }
+
+        .header-logo h1 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            letter-spacing: -0.025em;
+            background: linear-gradient(120deg, #f8fafc, #94a3b8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .header-logo span {
+            font-size: 0.75rem;
+            font-weight: 500;
+            color: var(--accent-cyan);
+            background: rgba(6, 182, 212, 0.1);
+            padding: 0.25rem 0.6rem;
+            border-radius: 9999px;
+            border: 1px solid rgba(6, 182, 212, 0.2);
+            letter-spacing: 0.05em;
+        }
+
+        .header-info {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .header-info div {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        /* Container Layout */
+        .app-container {
+            flex: 1;
+            display: grid;
+            grid-template-columns: 360px 1fr;
+            height: calc(100vh - 81px);
+        }
+
+        @media (max-width: 1024px) {
+            .app-container {
+                grid-template-columns: 1fr;
+                height: auto;
+            }
+        }
+
+        /* Sidebar Panel (Inputs) */
+        .sidebar {
+            background: rgba(15, 23, 42, 0.95);
+            border-right: 1px solid var(--border-color);
+            padding: 1.5rem;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .sidebar-section-title {
+            font-size: 0.9rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .tab-menu {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            background: rgba(30, 41, 59, 0.3);
+            padding: 0.5rem;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border-color);
+        }
+
+        .tab-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-secondary);
+            padding: 0.75rem 1rem;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            text-align: left;
+            font-size: 0.85rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            transition: var(--transition-smooth);
+        }
+
+        .tab-btn:hover {
+            color: var(--text-primary);
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        .tab-btn.active {
+            color: var(--text-primary);
+            background: var(--gradient-accent);
+            box-shadow: 0 4px 12px rgba(5, 150, 105, 0.2);
+        }
+
+        /* Form Controls */
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .form-group label {
+            font-size: 0.8rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .form-group label .required {
+            color: #ef4444;
+        }
+
+        .form-control {
+            background-color: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            padding: 0.65rem 0.85rem;
+            border-radius: var(--radius-sm);
+            font-size: 0.85rem;
+            outline: none;
+            transition: var(--transition-smooth);
+            width: 100%;
+        }
+
+        .form-control:focus {
+            border-color: var(--accent-teal);
+            box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.15);
+        }
+
+        select.form-control {
+            cursor: pointer;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%2394a3b8'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 0.75rem center;
+            background-size: 1rem;
+            padding-right: 2rem;
+        }
+
+        .highlight-card {
+            background: rgba(6, 182, 212, 0.03);
+            border: 1px dashed rgba(6, 182, 212, 0.2);
+            padding: 1rem;
+            border-radius: var(--radius-md);
+            margin-top: 0.5rem;
+        }
+
+        /* Preview Panel */
+        .preview-area {
+            padding: 2rem;
+            overflow-y: auto;
+            display: grid;
+            grid-template-columns: 1fr 340px;
+            gap: 2rem;
+            background-image: radial-gradient(circle at 10% 20%, rgba(30, 41, 59, 0.15) 0%, transparent 90%);
+        }
+
+        @media (max-width: 1200px) {
+            .preview-area {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-premium);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .card-header {
+            padding: 1.25rem 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(30, 41, 59, 0.4);
+        }
+
+        .card-title {
+            font-size: 1rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .card-body {
+            padding: 1.5rem;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        /* Output text areas */
+        .output-subject-wrapper {
+            background: rgba(15, 23, 42, 0.5);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-sm);
+            padding: 0.75rem 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .output-subject {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            flex: 1;
+        }
+
+        .output-text-area {
+            background: rgba(15, 23, 42, 0.5);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 1.25rem;
+            font-size: 0.85rem;
+            line-height: 1.6;
+            color: var(--text-primary);
+            width: 100%;
+            height: 480px;
+            resize: none;
+            outline: none;
+            font-family: 'Courier New', Courier, monospace;
+            white-space: pre-wrap;
+            overflow-y: auto;
+        }
+
+        .output-text-area:focus {
+            border-color: var(--accent-teal);
+        }
+
+        /* Buttons & Actions */
+        .btn-action-group {
+            display: flex;
+            gap: 0.75rem;
+        }
+
+        .btn {
+            border: none;
+            padding: 0.65rem 1.25rem;
+            border-radius: var(--radius-sm);
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            transition: var(--transition-smooth);
+        }
+
+        .btn-primary {
+            background: var(--gradient-accent);
+            color: var(--text-primary);
+            box-shadow: 0 4px 14px rgba(13, 148, 136, 0.2);
+        }
+
+        .btn-primary:hover {
+            opacity: 0.9;
+            transform: translateY(-1px);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-1px);
+        }
+
+        .btn-icon-only {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            width: 36px;
+            height: 36px;
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+        }
+
+        .btn-icon-only:hover {
+            color: var(--text-primary);
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        /* Phone frame for SMS */
+        .phone-frame {
+            background: #0b0f19;
+            border: 10px solid #1f293d;
+            border-radius: 36px;
+            padding: 1rem 0.75rem 1.5rem 0.75rem;
+            width: 100%;
+            max-width: 320px;
+            aspect-ratio: 9 / 18;
+            box-shadow: var(--shadow-premium), inset 0 0 10px rgba(0,0,0,0.8);
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            position: relative;
+        }
+
+        /* Speaker notch */
+        .phone-frame::before {
+            content: '';
+            position: absolute;
+            top: 4px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 12px;
+            background: #1f293d;
+            border-radius: 9999px;
+            z-index: 10;
+        }
+
+        .phone-header {
+            text-align: center;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            padding: 0.5rem 0 0.25rem 0;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .phone-body {
+            flex: 1;
+            overflow-y: auto;
+            padding: 0.25rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+        }
+
+        .sms-bubble {
+            background: #2563eb;
+            color: var(--text-primary);
+            border-radius: 18px 18px 2px 18px;
+            padding: 0.85rem 1rem;
+            font-size: 0.8rem;
+            line-height: 1.4;
+            max-width: 90%;
+            align-self: flex-end;
+            word-break: break-all;
+            white-space: pre-wrap;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+            font-family: inherit;
+        }
+
+        .sms-counter-badge {
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+            align-self: flex-end;
+            margin-right: 0.5rem;
+            margin-top: 0.25rem;
+        }
+
+        .sms-info-text {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            text-align: center;
+            margin-top: 0.5rem;
+            line-height: 1.4;
+        }
+
+        /* Toast Popup notification */
+        .toast {
+            position: fixed;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: rgba(13, 148, 136, 0.95);
+            color: var(--text-primary);
+            padding: 0.75rem 1.5rem;
+            border-radius: 9999px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            box-shadow: 0 10px 25px rgba(13, 148, 136, 0.4);
+            opacity: 0;
+            z-index: 9999;
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.3s;
+            pointer-events: none;
+        }
+
+        .toast.show {
+            transform: translateX(-50%) translateY(0);
+            opacity: 1;
+        }
+
+        /* Dynamic Field Display */
+        .dynamic-field-section {
+            border-top: 1px solid var(--border-color);
+            padding-top: 1rem;
+            margin-top: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header>
+        <div class="header-logo">
+            <div class="icon-wrapper">
+                <i data-lucide="scale" style="color: var(--text-primary);"></i>
+            </div>
+            <div>
+                <h1>준법건축 시민연대</h1>
+            </div>
+            <span>OFFICIAL GENERATOR</span>
+        </div>
+        <div class="header-info">
+            <div>
+                <i data-lucide="calendar" size="16"></i>
+                <span id="header-date">2026. 05. 25</span>
+            </div>
+            <div>
+                <i data-lucide="shield-check" size="16" style="color: var(--accent-emerald)"></i>
+                <span>Vault Verified</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- App Container -->
+    <div class="app-container">
+        
+        <!-- Sidebar Controls -->
+        <aside class="sidebar">
+            
+            <!-- tab menu -->
+            <div class="form-group">
+                <div class="sidebar-section-title">
+                    <i data-lucide="file-text" size="16"></i>
+                    <span>발송 문서 템플릿 선택</span>
+                </div>
+                <div class="tab-menu">
+                    <button class="tab-btn active" onclick="switchTemplate('petition')" id="btn-petition">
+                        <i data-lucide="landmark" size="16"></i>
+                        <span>국회의원/부처 탄원서</span>
+                    </button>
+                    <button class="tab-btn" onclick="switchTemplate('mayor')" id="btn-mayor">
+                        <i data-lucide="building-2" size="16"></i>
+                        <span>지자체장(구청장) 공문</span>
+                    </button>
+                    <button class="tab-btn" onclick="switchTemplate('councilor')" id="btn-councilor">
+                        <i data-lucide="award" size="16"></i>
+                        <span>지방의원(시/구의원) 공문</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Common Inputs -->
+            <div class="form-group">
+                <div class="sidebar-section-title">
+                    <i data-lucide="sliders" size="16"></i>
+                    <span>공통 변수 설정</span>
+                </div>
+                
+                <div class="form-group">
+                    <label>지방자치단체명 <span class="required">*</span></label>
+                    <input type="text" id="common-district" class="form-control" value="서울특별시 광진구" oninput="syncCommonInputs()">
+                </div>
+
+                <div class="form-group">
+                    <label>지부장 성명 <span class="required">*</span></label>
+                    <input type="text" id="common-leader" class="form-control" value="윤동식" oninput="syncCommonInputs()">
+                </div>
+
+                <div class="form-group">
+                    <label>대표 연락처 <span class="required">*</span></label>
+                    <input type="text" id="common-contact" class="form-control" value="010-1234-5678" oninput="syncCommonInputs()">
+                </div>
+
+                <div class="form-group">
+                    <label>지부 주소 <span class="required">*</span></label>
+                    <input type="text" id="common-address" class="form-control" value="서울시 광진구 자양로 123, 3층 준법건축 시민연대" oninput="syncCommonInputs()">
+                </div>
+
+                <div class="form-group">
+                    <label>지부 이메일</label>
+                    <input type="email" id="common-email" class="form-control" value="dsyoon@example.com" oninput="syncCommonInputs()">
+                </div>
+
+                <div class="form-group">
+                    <label>지부 팩스 번호</label>
+                    <input type="text" id="common-fax" class="form-control" value="02-123-4567" oninput="syncCommonInputs()">
+                </div>
+            </div>
+
+            <!-- 법령 충돌 8대 쟁점 중 강조 선택 -->
+            <div class="form-group">
+                <div class="sidebar-section-title">
+                    <i data-lucide="alert-triangle" size="16" style="color: var(--accent-cyan)"></i>
+                    <span>핵심 법령 충돌 강조 포인트</span>
+                </div>
+                <div class="form-group">
+                    <label>문서/문자에 강조할 쟁점 추가</label>
+                    <select id="law-conflict" class="form-control" onchange="renderAll()">
+                        <option value="none">-- 강조 포인트 선택 안 함 --</option>
+                        <option value="tax" selected>충돌 6: 지방세법 실질과세 vs 공부상 불법규제</option>
+                        <option value="rent">충돌 7: 임차인 점유권으로 인한 원상복구 이행불능</option>
+                        <option value="sewer">충돌 8: 하수도법 정화조 의무 vs 공사허가 제한 엇박자</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Dynamic Inputs depending on templates -->
+            <div class="dynamic-field-section" id="dynamic-inputs">
+                <!-- Will be loaded dynamically -->
+            </div>
+
+        </aside>
+
+        <!-- Preview & Output Area -->
+        <main class="preview-area">
+            
+            <!-- Left Card: Email Generation -->
+            <section class="card">
+                <div class="card-header">
+                    <div class="card-title">
+                        <i data-lucide="mail" style="color: var(--accent-teal)"></i>
+                        <span>이메일 전송용 (제목 & 본문)</span>
+                    </div>
+                    <div class="btn-action-group">
+                        <button class="btn btn-secondary" onclick="sendMailDirectly()">
+                            <i data-lucide="send" size="14"></i>
+                            <span>메일앱 실행</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="form-group">
+                        <label>이메일 제목</label>
+                        <div class="output-subject-wrapper">
+                            <span class="output-subject" id="email-subject-view">제목 미리보기</span>
+                            <button class="btn-icon-only" onclick="copyText('email-subject-view', '이메일 제목')" title="제목 복사">
+                                <i data-lucide="copy" size="16"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="form-group" style="flex: 1;">
+                        <div style="display:flex; justify-content:space-between; align-items:center;">
+                            <label>이메일 본문</label>
+                            <button class="btn btn-primary btn-secondary" style="padding: 0.25rem 0.75rem; font-size: 0.75rem;" onclick="copyText('email-body-view', '이메일 본문')">
+                                <i data-lucide="copy" size="12"></i>
+                                <span>본문 전체 복사</span>
+                            </button>
+                        </div>
+                        <textarea class="output-text-area" id="email-body-view" readonly></textarea>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Right Card: SMS/LMS Mobile Frame -->
+            <section class="card" style="background: rgba(30, 41, 59, 0.2);">
+                <div class="card-header">
+                    <div class="card-title">
+                        <i data-lucide="smartphone" style="color: var(--accent-cyan)"></i>
+                        <span>모바일 문자메시지 (SMS/LMS)</span>
+                    </div>
+                    <button class="btn-icon-only" onclick="copyText('sms-bubble-content', '문자 메시지')" title="문자 복사">
+                        <i data-lucide="copy" size="16"></i>
+                    </button>
+                </div>
+                <div class="card-body" style="justify-content: center; align-items: center; padding: 2rem 1.25rem;">
+                    
+                    <!-- Phone Mockup -->
+                    <div class="phone-frame">
+                        <div class="phone-header">
+                            <span id="phone-receiver-header">수신인</span>
+                        </div>
+                        <div class="phone-body">
+                            <div class="sms-bubble" id="sms-bubble-content">
+                                SMS 로딩 실패
+                            </div>
+                            <span class="sms-counter-badge" id="sms-byte-counter">0 / 2000 Byte</span>
+                        </div>
+                    </div>
+
+                    <div class="sms-info-text">
+                        <span>LMS(장문 메시지) 포맷으로 최적화되었습니다.<br>위 복사 버튼을 눌러 카카오톡이나 문자 발송기에 그대로 붙여넣으실 수 있습니다.</span>
+                    </div>
+
+                </div>
+            </section>
+
+        </main>
+
+    </div>
+
+    <!-- Toast Notification Popup -->
+    <div class="toast" id="toast-notif">
+        <i data-lucide="check-circle" size="16"></i>
+        <span id="toast-message">클립보드에 성공적으로 복사되었습니다!</span>
+    </div>
+
+    <script>
+        // Global State
+        let currentTemplate = 'petition';
+
+        // sensible defaults or loaded inputs
+        const state = {
+            // common variables
+            district: "서울특별시 광진구",
+            leader_name: "윤동식",
+            contact: "010-1234-5678",
+            address: "서울시 광진구 자양로 123, 3층 준법건축 시민연대",
+            email: "dsyoon@example.com",
+            fax: "02-123-4567",
+            
+            // petition dynamic
+            petition_receiver: "김광진",
+            petition_count: "250",
+            petition_mp_or_minister: "국회의원님",
+            petition_date: "2026. 05. 25",
+
+            // mayor dynamic
+            mayor_name: "김경호",
+            mayor_title: "구청장님",
+            mayor_serial: "05",
+            mayor_date: "25",
+            mayor_deadline: "2026년 6월 15일",
+
+            // councilor dynamic
+            councilor_name: "박의원",
+            councilor_title: "구의원님",
+            councilor_serial: "08",
+            councilor_date: "25",
+            councilor_deadline: "2026년 6월 15일"
+        };
+
+        // DOM dynamic loading
+        window.addEventListener('DOMContentLoaded', () => {
+            lucide.createIcons();
+            
+            // Set header date to current local date
+            const today = new Date();
+            const yyyy = today.getFullYear();
+            const mm = String(today.getMonth() + 1).padStart(2, '0');
+            const dd = String(today.getDate()).padStart(2, '0');
+            const formattedToday = `${yyyy}. ${mm}. ${dd}`;
+            document.getElementById('header-date').innerText = formattedToday;
+
+            // Load initial dynamic forms
+            switchTemplate('petition');
+        });
+
+        function syncCommonInputs() {
+            state.district = document.getElementById('common-district').value;
+            state.leader_name = document.getElementById('common-leader').value;
+            state.contact = document.getElementById('common-contact').value;
+            state.address = document.getElementById('common-address').value;
+            state.email = document.getElementById('common-email').value;
+            state.fax = document.getElementById('common-fax').value;
+
+            renderAll();
+        }
+
+        function switchTemplate(templateName) {
+            currentTemplate = templateName;
+            
+            // Update active tabs styling
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            if(templateName === 'petition') document.getElementById('btn-petition').classList.add('active');
+            if(templateName === 'mayor') document.getElementById('btn-mayor').classList.add('active');
+            if(templateName === 'councilor') document.getElementById('btn-councilor').classList.add('active');
+
+            // Render Dynamic Input Area in Sidebar
+            const dynamicArea = document.getElementById('dynamic-inputs');
+            
+            if (templateName === 'petition') {
+                dynamicArea.innerHTML = `
+                    <div class="sidebar-section-title">
+                        <i data-lucide="user-check" size="16" style="color: var(--accent-teal)"></i>
+                        <span>탄원서 전용 변수</span>
+                    </div>
+                    <div class="form-group">
+                        <label>수신 국회의원/장관 성명 <span class="required">*</span></label>
+                        <input type="text" id="pet-receiver" class="form-control" value="${state.petition_receiver}" oninput="updateDynamic('petition_receiver', this.value)">
+                    </div>
+                    <div class="form-group">
+                        <label>대표 수신자 칭호</label>
+                        <select id="pet-title" class="form-control" onchange="updateDynamic('petition_mp_or_minister', this.value)">
+                            <option value="국회의원님" ${state.petition_mp_or_minister === '국회의원님' ? 'selected' : ''}>국회의원님</option>
+                            <option value="장관님" ${state.petition_mp_or_minister === '장관님' ? 'selected' : ''}>장관님</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>동참 탄원인 수 (명) <span class="required">*</span></label>
+                        <input type="number" id="pet-count" class="form-control" value="${state.petition_count}" oninput="updateDynamic('petition_count', this.value)">
+                    </div>
+                `;
+            } else if (templateName === 'mayor') {
+                dynamicArea.innerHTML = `
+                    <div class="sidebar-section-title">
+                        <i data-lucide="user-check" size="16" style="color: var(--accent-teal)"></i>
+                        <span>구청장 공문 전용 변수</span>
+                    </div>
+                    <div class="form-group">
+                        <label>지자체장 성명 <span class="required">*</span></label>
+                        <input type="text" id="mayor-name" class="form-control" value="${state.mayor_name}" oninput="updateDynamic('mayor_name', this.value)">
+                    </div>
+                    <div class="form-group">
+                        <label>지자체장 직함 <span class="required">*</span></label>
+                        <input type="text" id="mayor-title" class="form-control" value="${state.mayor_title}" oninput="updateDynamic('mayor_title', this.value)">
+                    </div>
+                    <div class="form-group">
+                        <label>공문 일련번호 <span class="required">*</span></label>
+                        <input type="text" id="mayor-serial" class="form-control" value="${state.mayor_serial}" oninput="updateDynamic('mayor_serial', this.value)">
+                    </div>
+                    <div class="form-group">
+                        <label>정책 검토 답변 기한 <span class="required">*</span></label>
+                        <input type="text" id="mayor-deadline" class="form-control" value="${state.mayor_deadline}" oninput="updateDynamic('mayor_deadline', this.value)">
+                    </div>
+                `;
+            } else if (templateName === 'councilor') {
+                dynamicArea.innerHTML = `
+                    <div class="sidebar-section-title">
+                        <i data-lucide="user-check" size="16" style="color: var(--accent-teal)"></i>
+                        <span>지방의원 공문 전용 변수</span>
+                    </div>
+                    <div class="form-group">
+                        <label>지방의원 성명 <span class="required">*</span></label>
+                        <input type="text" id="councilor-name" class="form-control" value="${state.councilor_name}" oninput="updateDynamic('councilor_name', this.value)">
+                    </div>
+                    <div class="form-group">
+                        <label>지방의원 직함 <span class="required">*</span></label>
+                        <select id="councilor-title" class="form-control" onchange="updateDynamic('councilor_title', this.value)">
+                            <option value="구의원님" ${state.councilor_title === '구의원님' ? 'selected' : ''}>구의원님</option>
+                            <option value="시의원님" ${state.councilor_title === '시의원님' ? 'selected' : ''}>시의원님</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>공문 일련번호 <span class="required">*</span></label>
+                        <input type="text" id="councilor-serial" class="form-control" value="${state.councilor_serial}" oninput="updateDynamic('councilor_serial', this.value)">
+                    </div>
+                    <div class="form-group">
+                        <label>입법 검토 답변 기한 <span class="required">*</span></label>
+                        <input type="text" id="councilor-deadline" class="form-control" value="${state.councilor_deadline}" oninput="updateDynamic('councilor_deadline', this.value)">
+                    </div>
+                `;
+            }
+
+            lucide.createIcons();
+            renderAll();
+        }
+
+        function updateDynamic(key, value) {
+            state[key] = value;
+            renderAll();
+        }
+
+        // Get conflict emphasis text
+        function getConflictSection() {
+            const val = document.getElementById('law-conflict').value;
+            if (val === 'tax') {
+                return `**[특별 보완 사항 - 지방세법과 건축법의 이중잣대 충돌 및 신의성실 원칙 위반]**
+   - 귀청(세무부서)에서는 지방세법 제17조(실질과세 원칙) 및 제106조에 의거하여 본 건축물의 사실상 현황을 주거용으로 완벽히 공인하고 매년 '주택분 재산세'를 정당하게 징수하고 있습니다.
+   - 그러나 한편(건축부서)에서는 공부상 규제를 들이밀어 이를 '상가 무단 용도변경'으로 간주하여 매년 가혹한 이행강제금을 중복 부과하고 있습니다.
+   - 이는 국가가 선행 처분으로 인정한 사실관계를 전면 부정하여 벌금을 물리는 꼴로, 행정법상의 핵심 원칙인 **'금반언(禁反言)의 원칙' 및 '신의성실의 원칙'**에 완전히 정면으로 위배되는 자기모순적 이중 과세 행정입니다. 재산세 징수 대상 주택에 대한 이행강제금은 양성화 완료 시까지 즉시 유예되어야 마땅합니다.`;
+            } else if (val === 'rent') {
+                return `**[특별 보완 사항 - 민법·주임법상 점유권과 건축법 시정명령의 법리적 이행불능 충돌]**
+   - 건축법 제79조에 따라 시정명령 및 원상복구를 하려 해도, 사법상 관계인 **민법 제623조(임대인의 의무)** 및 **주택임대차보호법 제4조**에 의거하여 임차인의 동의나 퇴거 없이는 무단 진입 및 파손이 원천적으로 불가능합니다.
+   - 이를 무시하고 강제 철거를 진행할 시 임대인은 **형법 제319조(주거침입죄) 및 제366조(재물손괴죄)**의 범죄자가 되어 사법 단죄를 받게 되는 진퇴양난의 외통수에 걸려 있습니다.
+   - 따라서 임대인과 임차인 간의 점유권 충돌이 발생하는 동안은 법률상·사실상 명백한 **'이행불능의 상태'**가 성립하며, 이행불능 상태에서의 시정의무 해태는 이행강제금의 징수 요건을 결여한 위법 행위이므로 즉각 부과를 정지하거나 유예해야 합니다.`;
+            } else if (val === 'sewer') {
+                return `**[특별 보완 사항 - 하수도법 정화조 의무와 건축과 위반대장 규제의 칸막이 행정 충돌]**
+   - 하수도법 및 지자체 오수발생량 산정 고시에 의거하여 용도변경에 따른 정화조 개선 공사나 정화조 증설을 하려고 신청해도, 건축과에서는 위반건축물이라는 낙인을 이유로 굴착 허가 및 하수도 개보수 신고 접수를 기계적으로 반려하고 있습니다.
+   - 이는 공공위생 및 환경오염 방지라는 하수도법상의 공익적 개선 공사마저 부처 간 행정 칸막이로 차단하는 모순된 행정 자해 행위입니다.
+   - 안전 및 공중 위생을 해치는 엇박자 행정을 혁파하여, 환경 보수를 위한 인프라 공사 등은 위반 여부와 상관없이 즉각 신고를 수리하고 공사를 허용해야 합니다.`;
+            }
+            return '';
+        }
+
+        // Get conflict text for SMS
+        function getConflictSMS(prefix = '') {
+            const val = document.getElementById('law-conflict').value;
+            if (val === 'tax') {
+                return `${prefix}▶지방세법 실질과세로 '주택분 재산세'를 합법 징수하면서, 건축행정적으로는 '불법 상가'라며 이행강제금을 때리는 이중잣대(행정법상 금반언/신의성실 원칙 위반) 모순을 즉각 중단하고 구제해 주십시오!`;
+            } else if (val === 'rent') {
+                return `${prefix}▶임차인 점유권 보장으로 원상복구 강행 시 형법상 주거침입·재물손괴 범죄자가 되는 이행불능 상황(임대차 존속 시 시정명령 이행불능 유예 의무)을 즉각 해소하여 주십시오!`;
+            } else if (val === 'sewer') {
+                return `${prefix}▶정화조를 증설·보수하려 해도 위반건축물이라는 이유로 공사 굴착 허가 자체를 차단하여 하수오물 처리를 막는 자해적 칸막이 행정(하수도법 엇박자)을 즉시 혁파해 주십시오!`;
+            }
+            return '';
+        }
+
+        // Main Rendering Logic
+        function renderAll() {
+            const today = new Date();
+            const year = today.getFullYear();
+            const month = String(today.getMonth() + 1).padStart(2, '0');
+            const day = String(today.getDate()).padStart(2, '0');
+
+            if (currentTemplate === 'petition') {
+                renderPetition(year, month, day);
+            } else if (currentTemplate === 'mayor') {
+                renderMayor(year, month, day);
+            } else if (currentTemplate === 'councilor') {
+                renderCouncilor(year, month, day);
+            }
+
+            // Calculate SMS Byte length
+            calculateSMSBytes();
+        }
+
+        // 1. Render Petition (국회의원 탄원서)
+        function renderPetition(year, month, day) {
+            const receiver = state.petition_receiver || "[국회의원 성명]";
+            const count = state.petition_count || "[숫자]";
+            const honorific = state.petition_mp_or_minister || "국회의원님";
+            const district = state.district || "[지방자치단체명]";
+            const leader = state.leader_name || "[지부장 이름]";
+            const contact = state.contact || "[연락처]";
+            const address = state.address || "[주소]";
+            
+            const conflictText = getConflictSection();
+
+            const subject = `[탄원] 서민 주거 안정 및 재산권 보호를 위한 「특정건축물 정리에 관한 특별조치법」 개정 건의의 건`;
+            
+            let body = `[탄 원 서]
+
+수  신 : ${receiver} ${honorific} / 국토교통부 장관 귀하
+참  조 : 국토교통위원회 수석전문위원 및 국토교통부 건축정책과장
+발  신 : 준법건축 바른관리 시민연대 ${district} 지부 회원 일동
+         (대표 탄원인 : 지부장 ${leader} 외 ${count}명)
+주  소 : ${address}
+연락처 : ${contact}
+
+제  목 : [탄원] 서민 주거 안정 및 재산권 보호를 위한 「특정건축물 정리에 관한 특별조치법」 개정 및 시행령 세부 규정 완화 건의의 건
+
+존경하는 ${receiver} ${honorific},
+
+1. 국민의 목소리에 귀 기울이시고 중서민의 민생 안정을 위해 활발한 입법 및 의정 활동에 전념하시는 귀하의 노고에 진심으로 감사와 경의를 표합니다.
+
+2. 저희는 준법건축 바른관리 시민연대 ${district} 지부 소속 회원들이자, 본의 아니게 위반건축물을 소유하게 되어 매년 부과되는 가혹한 이행강제금의 굴레 속에서 고통받고 있는 대한민국 서민 소유주 및 억울한 임차인 일동입니다.
+
+3. 지난 2026년 5월 7일, 여·야·정의 눈물겨운 대타협을 통해 오랜 숙원이었던 「특정건축물 정리에 관한 특별조치법」 (이하 특별법)이 본회의를 통과하였을 때, 저희 백만 위반건축물 피해 소유주와 가족들은 이제야 어두운 터널을 벗어나 정당한 재산권과 주거 안정의 혜택을 누릴 수 있으리라 기쁨의 눈물을 흘렸습니다.
+
+4. 그러나 국회 통과 법안의 구체적인 세부 조항들과 시행 부칙들을 면밀히 살펴본 결과, 서민 구제 실효성을 높이기 위한 일부 독소 및 한계 조항이 존재하여 보완이 절실합니다. 이에 저희 탄원인 일동은 간절한 마음을 담아 아래 사항들을 적극 검토하고 입법 및 행정 조치로 보완해 주실 것을 강력히 탄원합니다.
+
+--- 다 음 ---
+
+가. 특별법 유효기간(18개월)의 최소 3년 이상 연장 법안 조속 발의 촉구
+   - 현행 특별법의 18개월이라는 지나치게 짧은 유효 기한은 대다수 영세하고 정보가 취약한 서민들이 양성화 혜택을 알기도 전에 법안이 종료되어 또 다른 사각지대를 낳을 뿐입니다. 실효적 구제를 위해 특별법 유효기간을 최소 3년(36개월) 이상으로 연장하는 일부개정법률안을 조속히 발의하여 주십시오.
+
+나. 국토교통부 시행령 개정을 통한 '근생빌라' 주차장 기준의 전국적 완화 적용 건의
+   - 특별법 제7조제1항 단서는 '근생빌라' 소유주들에게 부설주차장 부담금을 납부하도록 명문화하고 있습니다. 대당 수천만 원에 달하는 비용 납부는 서민들에게 양성화를 원천 포기하게 만드는 큰 행정 장벽입니다. 지자체별 주거 형평성 붕괴를 막도록, 시행령 제정 시 부설주차장 의무를 전국적으로 최소 80% 이상 일괄 감면하도록 상위 가이드라인을 명문화하여 주십시오.
+
+다. 억울한 선의의 소유주를 위한 소급적 구제 장치 마련
+   - 시공사의 부도, 사기적 매물 중개 등으로 인해 위반 건축물인지 전혀 모르고 매수한 선의의 소유주들이 주홍글씨에서 벗어날 수 있도록 입법적 지원과 국토부 차원의 행정 유권해석을 통해 폭넓은 소급 구제 장치를 마련해 주시길 부탁드립니다.
+${conflictText ? '\n' + conflictText + '\n' : ''}
+5. 존경하는 ${receiver} ${honorific}, 법은 눈물 흘리는 서민의 삶을 보듬어 줄 때 진정한 권위를 가집니다. 저희 ${district} 준법건축 시민연대 회원 일동은 귀하께서 보여주실 과감한 결단을 평생 잊지 않고 기억할 것입니다. 부디 저희의 절박한 청원을 외면하지 마시고 따뜻한 민생 살리기에 앞장서 주시기를 간절히 탄원드립니다.
+
+${year}년 ${month}월 ${day}일
+
+대표 탄원인 : 준법건축 바른관리 시민연대 ${district} 지부 
+지부장 ${leader} 외 탄원인 일동 (인)`;
+
+            document.getElementById('email-subject-view').innerText = subject;
+            document.getElementById('email-body-view').value = body;
+            
+            // SMS content
+            document.getElementById('phone-receiver-header').innerText = `${receiver} 국회의원`;
+            
+            const conflictSMS = getConflictSMS('\n');
+            const smsBody = `[준법건축 시민연대 탄원]
+안녕하십니까, ${receiver} 의원님. 준법건축 시민연대 ${district} 지부장 ${leader}입니다.
+지난 5월 7일 통과된 '특정건축물 특별법'의 유효 기한(18개월)을 최소 3년으로 연장하는 법안 개정 발의 및 시행령상 근생빌라 주차 부담금 감면 기준 전국 명문화를 간곡히 탄원드립니다.${conflictSMS}
+상세 탄원서는 이메일로 송부드렸습니다. 고통받는 백만 서민 소유주들의 생존권을 지켜주시기 바랍니다.
+연락처: ${contact}`;
+            
+            document.getElementById('sms-bubble-content').innerText = smsBody;
+        }
+
+        // 2. Render Mayor Document (지자체장 공문)
+        function renderMayor(year, month, day) {
+            const receiver = state.mayor_name || "[단체장 이름]";
+            const title = state.mayor_title || "구청장님";
+            const serial = state.mayor_serial || "[일련번호]";
+            const deadline = state.mayor_deadline || "[답변기한]";
+            
+            const district = state.district || "[지방자치단체명]";
+            const leader = state.leader_name || "[지부장 이름]";
+            const contact = state.contact || "[연락처]";
+            const address = state.address || "[주소]";
+            const email = state.email || "[이메일]";
+            const fax = state.fax || "[팩스]";
+            
+            const conflictText = getConflictSection();
+
+            const subject = `[정책제안] 실효성 있는 위반건축물 양성화를 위한 ${district} 건축 조례 및 주차장 조례 개정 공약(정책) 채택 요청의 건`;
+            
+            let body = `[공 문]
+
+수  신 : ${district}장 ${receiver} 귀하
+참  조 : 비서실장 및 도시건축과(또는 주거정비과) 조례담당 주무관
+발  신 : 준법건축 바른관리 시민연대 ${district} 지부
+주  소 : ${address}
+전  화 : ${contact} (지부장 ${leader})
+팩  스 : ${fax}
+이메일 : ${email}
+
+문서번호 : 준법시민 제2026-${serial}호
+발신일자 : 2026. 05. ${day}
+제    목 : [정책제안] 실효성 있는 위반건축물 양성화를 위한 ${district} 건축 조례 및 주차장 조례 개정 공약(정책) 채택 요청의 건
+
+안녕하십니까. 
+
+1. ${district}의 발전과 주민의 복리 증진을 위해 헌신하시는 ${receiver} ${title}의 건승을 기원합니다.
+
+2. 본 연대는 준법 건축 문화를 선도하고 지자체 행정을 지원·감시하는 시민단체로서, 위반 건축물 소유주들의 생존권 보장과 억울한 선의의 서민 구제를 위해 올바른 건축 행정 정착에 앞장서고 있습니다.
+
+3. 지난 2026년 5월 7일, 국회는 대대적인 민생 안정 대책으로 「특정건축물 정리에 관한 특별조치법」 (이하 특별법)을 전격 통과시켰습니다. 그러나 본 특별법의 실효성을 담보하기 위해서는 지방자치단체 차원의 조례 개정 및 행정 지원이 필수적인 선행 과제입니다.
+
+4. 이에 본 연대는 지자체장의 행정 권한으로 즉각 추진이 가능한 아래의 정책 과제를 제안하오니 적극적으로 채택하여 조속히 시행해 주실 것을 요청합니다.
+
+--- 다 음 ---
+
+가. 특정건축물 부설주차장 설치 비용(준설 대체 부담금) 전액 면제 또는 감면 (주차장 조례 개정)
+   - 특별법 제7조제3항("조례로 정하는 바에 따라 부설주차장의 설치의무를 완화하거나 면제할 수 있다")을 적극 인용하여, ${district} 주차장 조례를 개정함으로써 추가 설치 의무 및 갈음 비용을 전액 면제(또는 90% 이상 감면)하여 실질적인 양성화를 열어주십시오.
+
+나. 이행강제금의 법정 최고 수준 감면(75%) 적용 (건축 조례 개정)
+   - 건축법 시행령 제115조의4에 근거하여 ${district} 건축 조례를 전격 개정해 주십시오. 선의의 매수인, 생계형 위반, 시공사 기망 피해 등을 감경 사유로 조례에 폭넓게 추가하고 감경 비율을 법정 최고 수준인 75%로 명문화해 주십시오.
+
+다. ${district} '특정건축물지원센터' 조속한 설립 및 설계비 예산 지원
+   - 특별법 제5조에 의거하여 ${district} 특정건축물지원센터를 즉각 설치하고, 관내 건축안전특별회계 재원을 투입하여 서민 소유주들의 설계 도서 작성 비용을 전액 또는 일부 지원해 주십시오.
+${conflictText ? '\n' + conflictText + '\n' : ''}
+5. 본 연대가 제안하는 민생 정책은 지역 내 수만 명에 달하는 위반건축주, 임차인의 생존권이 걸린 최우선 현안입니다. ${title}께서 본 제안을 적극 수용하여 행정 발의로 조례 개정을 이끌어 주신다면, 적극적 협력과 아낌없는 지지를 보낼 것입니다.
+
+6. 본 정책 제안에 대한 수용 여부 및 구체적인 추진 의견을 ${deadline}까지 서면으로 성실히 회신해 주실 것을 정중히 요청합니다.
+
+첨부파일 : 1. 국회 통과 특정건축물 정리에 관한 특별조치법안(대안) 1부.
+            2. 건축법 시행령 제115조의4(이행강제금의 감경) 개정 조항 1부.  끝.
+
+2026년 05월 ${day}일
+
+준법건축 바른관리 시민연대 ${district} 지부 (인)`;
+
+            document.getElementById('email-subject-view').innerText = subject;
+            document.getElementById('email-body-view').value = body;
+            
+            // SMS content
+            document.getElementById('phone-receiver-header').innerText = `${receiver} ${title}`;
+            
+            const conflictSMS = getConflictSMS('\n');
+            const smsBody = `[준법시민연대 정책제안]
+안녕하십니까, ${receiver} ${title}. 준법건축 시민연대 지부장 ${leader}입니다.
+지난 5월 7일 국회 통과된 특별법의 실효적 주민 구제를 위해, ${district} 건축 조례(이행강제금 최고율 75% 감감) 및 주차장 조례(부담금 면제) 개정의 신속한 행정 발의를 제안합니다.${conflictSMS}
+상세 공문은 이메일(${email})로 송부드렸사오니 ${deadline}까지 긍정적 회신을 청원드립니다.
+연락처: ${contact}`;
+            
+            document.getElementById('sms-bubble-content').innerText = smsBody;
+        }
+
+        // 3. Render Councilor Document (지방의원 공문)
+        function renderCouncilor(year, month, day) {
+            const receiver = state.councilor_name || "[의원 성명]";
+            const title = state.councilor_title || "구의원님";
+            const serial = state.councilor_serial || "[일련번호]";
+            const deadline = state.councilor_deadline || "[답변기한]";
+            
+            const district = state.district || "[지방자치단체명]";
+            const leader = state.leader_name || "[지부장 이름]";
+            const contact = state.contact || "[연락처]";
+            const address = state.address || "[주소]";
+            const email = state.email || "[이메일]";
+            const fax = state.fax || "[팩스]";
+            
+            const conflictText = getConflictSection();
+
+            const subject = `[입법제안] 서민 생존권 및 재산권 보호를 위한 ${district} 건축 조례 및 주차장 조례 개정안 공동 발의 요청의 건`;
+            
+            let body = `[공 문]
+
+수  신 : ${district}의회 ${receiver} ${title} 귀하
+참  조 : ${receiver} 의원실 정책보좌관 및 입법 조사관
+발  신 : 준법건축 바른관리 시민연대 ${district} 지부
+주  소 : ${address}
+전  화 : ${contact} (지부장 ${leader})
+팩  스 : ${fax}
+이메일 : ${email}
+
+문서번호 : 준법시민 제2026-${serial}호
+발신일자 : 2026. 05. ${day}
+제    목 : [입법제안] 서민 생존권 및 재산권 보호를 위한 ${district} 건축 조례 및 주차장 조례 개정안 공동 발의 및 입법 협조 청원의 건
+
+안녕하십니까.
+
+1. 지역 사회의 발전과 주민의 대변자로서 민의를 입법 활동에 반영하기 위해 헌신하시는 ${receiver} ${title}의 노고에 깊은 경의를 표합니다.
+
+2. 본 연대는 준법 건축 문화 정착을 돕고 억울한 사정의 위반 건축물 소유주들의 목소리를 대변하는 시민단체입니다. 관내에는 시공사 기망 피해, 선의의 주택 매수 등으로 고통받는 중서민들이 매년 부과되는 가혹한 이행강제금의 고통 속에 생존권을 위협받고 있습니다.
+
+3. 이러한 민생 경제의 아픔을 치유하고자 지난 5월 7일 국회는 여·야 합의로 「특정건축물 정리에 관한 특별조치법」 (이하 특별법)을 본회의에서 통과시켰습니다. 그러나 상위법이 위임한 핵심 완화 혜택은 지방의회가 직접 조례를 개정해야만 주민들이 실질적인 혜택을 볼 수 있도록 규정되어 있습니다.
+
+4. 이에 본 연대는 지자체 의원의 입법 전권을 빌려, 아래 두 가지 핵심 조례의 개정안을 입법 제안하오니 의원 발의(공동 발의)를 주도해 주시고 본회의 통과에 적극 협조해 주실 것을 강력히 청원합니다.
+
+--- 다 음 ---
+
+가. ${district} 주차장 설치 및 관리 조례 개정 (부설주차장 설치의무 면제 및 분담금 감면)
+   - 특별법 제7조제3항을 근거로 삼아, 추가 주차 공간 형성이 불가능한 노후 주택가 밀집지를 위해 추가 부설주차장 설치 의무를 전액 면제하고 부담금 또한 전액 면제 또는 90% 이상 감면하는 조항을 신설해 주십시오.
+
+나. ${district} 건축 조례 개정 (이행강제금 감경 사유 확대 및 최고율 75% 감면 적용)
+   - 선의의 매수인, 시공업자 기망 피해 등을 건축 조례상 감경 대상 사유에 명문화하여 신설하고, 이행강제금 감경 비율을 상위법령상 허용되는 법정 최고 한도인 75% 감면(원래 금액의 25%만 부과)으로 명문화해 주십시오.
+
+다. 단독주택 양성화 대상 범위의 최대 허용 (건축 조례 개정)
+   - 특별법이 조례로 위임한 단독주택 양성화 대상 면적을 연면적 330제곱미터 이하로 최대 적용하여 구제 사각지대에 놓인 다가구 소유주들을 폭넓게 포용해 주십시오.
+${conflictText ? '\n' + conflictText + '\n' : ''}
+5. 의원님께서 대변하셔야 할 지역 주민 수천 세대의 눈물이 이 조례 개정안의 발의와 통과에 달려 있습니다. 민생 경제를 살리고 서민의 억울한 재산상 피해를 구제하는 의정 활동의 이정표로서, 본 개정안을 공동 입법 발의해 주시길 청원드립니다.
+
+6. 본 입법 제안에 대한 의원님의 소중한 동참 여부를 ${deadline}까지 회신해 주시면 감사하겠습니다. 빠른 시일 내에 의원실을 직접 방문하여 상세 사안을 보고드릴 수 있도록 면담 일정 조율을 부탁드립니다.
+
+첨부파일 : 1. ${district} 건축 조례 개정안 기초 초안 1부.
+            2. ${district} 주차장 조례 개정안 기초 초안 1부.  끝.
+
+2026년 05월 ${day}일
+
+준법건축 바른관리 시민연대 ${district} 지부 (인)`;
+
+            document.getElementById('email-subject-view').innerText = subject;
+            document.getElementById('email-body-view').value = body;
+            
+            // SMS content
+            document.getElementById('phone-receiver-header').innerText = `${receiver} ${title}`;
+            
+            const conflictSMS = getConflictSMS('\n');
+            const smsBody = `[준법시민연대 입법제안]
+안녕하십니까, ${receiver} ${title}. 준법건축 시민연대 지부장 ${leader}입니다.
+국회를 통과한 특정건축물 특별법의 서민 구제를 위해, ${district} 주차장 설치 의무 면제 및 건축 조례(이행강제금 최고율 75% 감경) 개정 조례안의 의원 공동 발의 청원을 드립니다.${conflictSMS}
+상세 공문은 이메일(${email})로 송부드렸사오니 ${deadline}까지 공동 발의 협조 회신을 간곡히 제안합니다.
+연락처: ${contact}`;
+            
+            document.getElementById('sms-bubble-content').innerText = smsBody;
+        }
+
+        // Clipboard Copying mechanism with Toast Alert
+        function copyText(elementId, label) {
+            const el = document.getElementById(elementId);
+            let textToCopy = '';
+            
+            if (el.tagName === 'TEXTAREA' || el.tagName === 'INPUT') {
+                textToCopy = el.value;
+            } else {
+                textToCopy = el.innerText;
+            }
+            
+            navigator.clipboard.writeText(textToCopy).then(() => {
+                showToast(`${label}이(가) 클립보드에 복사되었습니다!`);
+            }).catch(err => {
+                // Fallback copy
+                const textArea = document.createElement("textarea");
+                textArea.value = textToCopy;
+                document.body.appendChild(textArea);
+                textArea.select();
+                try {
+                    document.execCommand('copy');
+                    showToast(`${label}이(가) 클립보드에 복사되었습니다!`);
+                } catch (e) {
+                    showToast("복사 실패. 브라우저 보안 설정을 확인하세요.");
+                }
+                document.body.removeChild(textArea);
+            });
+        }
+
+        function showToast(message) {
+            const toast = document.getElementById('toast-notif');
+            document.getElementById('toast-message').innerText = message;
+            toast.classList.add('show');
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 2500);
+        }
+
+        // SMS length check (assuming 2 bytes for Korean characters)
+        function calculateSMSBytes() {
+            const text = document.getElementById('sms-bubble-content').innerText;
+            let bytes = 0;
+            for (let i = 0; i < text.length; i++) {
+                const code = text.charCodeAt(i);
+                if (code > 127) {
+                    bytes += 2; // Korean, special characters
+                } else {
+                    bytes += 1; // English, numbers, spaces
+                }
+            }
+            
+            const badge = document.getElementById('sms-byte-counter');
+            badge.innerText = `${bytes} / 2000 Byte`;
+            if(bytes > 2000) {
+                badge.style.color = '#ef4444';
+            } else {
+                badge.style.color = 'var(--text-secondary)';
+            }
+        }
+
+        // Direct email action (mailto link)
+        function sendMailDirectly() {
+            const subject = encodeURIComponent(document.getElementById('email-subject-view').innerText);
+            const body = encodeURIComponent(document.getElementById('email-body-view').value);
+            const email = state.email || "";
+            window.location.href = `mailto:${email}?subject=${subject}&body=${body}`;
+        }
+    </script>
+</body>
+</html>
