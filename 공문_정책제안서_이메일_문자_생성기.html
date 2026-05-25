@@ -569,7 +569,146 @@
             padding-top: 1rem;
             margin-top: 0.5rem;
         }
-    </style>
+    
+        /* [NEW] Mail Selection Modal Overlay */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(15, 23, 42, 0.75);
+            backdrop-filter: blur(8px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+        .modal-overlay.show {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        .modal-card {
+            background: #1e293b;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            width: 90%;
+            max-width: 520px;
+            box-shadow: var(--shadow-premium), 0 20px 25px -5px rgba(0, 0, 0, 0.5);
+            overflow: hidden;
+            transform: scale(0.9);
+            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        .modal-overlay.show .modal-card {
+            transform: scale(1);
+        }
+        .modal-header {
+            padding: 1.25rem 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(30, 41, 59, 0.6);
+        }
+        .modal-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 0.65rem;
+        }
+        .modal-close-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+            line-height: 1;
+        }
+        .modal-close-btn:hover {
+            color: var(--text-primary);
+        }
+        .modal-body {
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1.25rem;
+        }
+        .modal-desc {
+            font-size: 0.85rem;
+            line-height: 1.5;
+            color: var(--text-secondary);
+        }
+        .modal-options-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+        .modal-option-card {
+            background: rgba(30, 41, 59, 0.4);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 1rem 1.25rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            transition: var(--transition-smooth);
+        }
+        .modal-option-card:hover {
+            background: rgba(30, 41, 59, 0.8);
+            border-color: var(--accent-teal);
+            transform: translateY(-2px);
+        }
+        .modal-option-card.recommended {
+            border: 2px solid var(--accent-teal);
+            background: rgba(13, 148, 136, 0.05);
+        }
+        .modal-option-card.recommended:hover {
+            background: rgba(13, 148, 136, 0.1);
+        }
+        .option-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.05);
+            flex-shrink: 0;
+        }
+        .option-info {
+            flex: 1;
+        }
+        .option-title {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .badge-recommended {
+            font-size: 0.7rem;
+            font-weight: 700;
+            background: var(--gradient-accent);
+            color: var(--text-primary);
+            padding: 0.1rem 0.4rem;
+            border-radius: 4px;
+            text-transform: uppercase;
+        }
+        .option-desc {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            margin-top: 0.25rem;
+            line-height: 1.4;
+        }
+</style>
 </head>
 <body>
 
@@ -1443,12 +1582,132 @@ ${conflictText ? '\n' + conflictText + '\n' : ''}
         }
 
         // Direct email action (mailto link)
+        // Direct email action (opens selection modal to prevent Gmail 400 URL length error!)
         function sendMailDirectly() {
+            const modal = document.getElementById('mail-modal');
+            if (modal) {
+                modal.classList.add('show');
+                // Re-initialize icons inside modal
+                if (typeof lucide !== 'undefined') {
+                    lucide.createIcons();
+                }
+            } else {
+                sendMailViaMailto();
+            }
+        }
+
+        function closeMailModal() {
+            const modal = document.getElementById('mail-modal');
+            if (modal) modal.classList.remove('show');
+        }
+
+        // Close modal when clicking outside of modal-card
+        window.addEventListener('click', (e) => {
+            const modal = document.getElementById('mail-modal');
+            if (e.target === modal) {
+                closeMailModal();
+            }
+        });
+
+        // 1. Send via Mailto (PC default client)
+        function sendMailViaMailto() {
+            closeMailModal();
             const subject = encodeURIComponent(document.getElementById('email-subject-view').innerText);
             const body = encodeURIComponent(document.getElementById('email-body-view').value);
             const email = state.target_email || "";
             window.location.href = `mailto:${email}?subject=${subject}&body=${body}`;
         }
+
+        // 2. Send via Webmail (Gmail or Naver)
+        function sendMailViaWeb(type) {
+            closeMailModal();
+            
+            // First, copy the body automatically to make pasting seamless!
+            const bodyText = document.getElementById('email-body-view').value;
+            const subjectText = document.getElementById('email-subject-view').innerText;
+            const email = state.target_email || "";
+            
+            navigator.clipboard.writeText(bodyText).then(() => {
+                showToast("본문이 클립보드에 복사되었습니다! 메일 창에 붙여넣기(Ctrl+V) 하세요.");
+                
+                // Construct Web Compose URLs (without body to prevent 400 Bad Request URL length error!)
+                let url = "";
+                if (type === 'gmail') {
+                    const su = encodeURIComponent(subjectText);
+                    url = `https://mail.google.com/mail/u/0/?view=cm&fs=1&to=${email}&su=${su}`;
+                } else if (type === 'naver') {
+                    const su = encodeURIComponent(subjectText);
+                    url = `https://mail.naver.com/write/?to=${email}&subject=${su}`;
+                }
+                
+                if (url) {
+                    setTimeout(() => {
+                        window.open(url, '_blank');
+                    }, 1000);
+                }
+            }).catch(err => {
+                console.error("Clipboard copy failed:", err);
+                // Fallback even if clipboard copy fails
+                let url = "";
+                if (type === 'gmail') {
+                    url = `https://mail.google.com/mail/u/0/?view=cm&fs=1&to=${email}`;
+                } else if (type === 'naver') {
+                    url = `https://mail.naver.com/write/?to=${email}`;
+                }
+                if (url) window.open(url, '_blank');
+            });
+        }
     </script>
+
+    <!-- [NEW] Mail Options Modal -->
+    <div id="mail-modal" class="modal-overlay">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h3 class="modal-title">
+                    <i data-lucide="mail" style="color: var(--accent-teal)"></i>
+                    <span>이메일 발송 방식 선택</span>
+                </h3>
+                <button class="modal-close-btn" onclick="closeMailModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p class="modal-desc">정책제안서 본문이 매우 길기 때문에, 브라우저/웹메일(지메일 등) 설정에 따라 직접 실행 시 오류가 발생할 수 있습니다. 아래 권장 발송 방식을 선택해 주세요.</p>
+                
+                <div class="modal-options-grid">
+                    <!-- Option 1: Gmail Compose (Recommended) -->
+                    <div class="modal-option-card recommended" onclick="sendMailViaWeb('gmail')">
+                        <div class="option-icon">
+                            <img src="https://ssl.gstatic.com/ui/v1/icons/mail/rfr/gmail.ico" alt="Gmail" style="width: 24px; height: 24px;">
+                        </div>
+                        <div class="option-info">
+                            <div class="option-title">지메일(Gmail)로 발송 <span class="badge-recommended">권장</span></div>
+                            <div class="option-desc">본문이 자동 복사되며, 지메일 작성 창이 새 탭으로 열립니다. 본문 칸에 붙여넣기(Ctrl+V) 하세요.</div>
+                        </div>
+                    </div>
+
+                    <!-- Option 2: Naver Compose -->
+                    <div class="modal-option-card" onclick="sendMailViaWeb('naver')">
+                        <div class="option-icon">
+                            <img src="https://ssl.pstatic.net/static/nid/login/naver_logo.png" alt="Naver" style="width: 24px; height: 24px; object-fit: contain;">
+                        </div>
+                        <div class="option-info">
+                           <div class="option-title">네이버 메일로 발송</div>
+                           <div class="option-desc">본문이 자동 복사되며, 네이버 메일 쓰기 창이 새 탭으로 열립니다. 본문 칸에 붙여넣기(Ctrl+V) 하세요.</div>
+                        </div>
+                    </div>
+
+                    <!-- Option 3: Standard Mailto -->
+                    <div class="modal-option-card" onclick="sendMailViaMailto()">
+                        <div class="option-icon" style="background: rgba(255, 255, 255, 0.05); display: flex; align-items: center; justify-content: center; border-radius: 50%;">
+                            <i data-lucide="external-link" size="20" style="color: var(--text-secondary)"></i>
+                        </div>
+                        <div class="option-info">
+                            <div class="option-title">기본 아웃룩/메일 앱 실행</div>
+                            <div class="option-desc">PC의 기본 메일 프로그램(Outlook, Mail 앱 등)을 바로 실행합니다. (본문이 길면 오류가 날 수 있음)</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
